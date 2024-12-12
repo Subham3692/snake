@@ -111,9 +111,7 @@
 </head>
 
 <body>
-    <h1>Snake Game
-        <div class="geeks">Okat he 1000 krneki</div>
-    </h1>
+    <h1 style="color: #b94040;">Snake Game</h1>
     <div>
         <strong>Score:</strong> <span id="score">0</span>
     </div>
@@ -213,13 +211,15 @@
 
             if (snakeX < 0 || snakeX >= board.width || snakeY < 0 || snakeY >= board.height) {
                 gameOver = true;
-                alert("Game Over");
+                    alert("Okat he 1000 krneki Game Over");
+                    window.location.href = 'index.html';
             }
 
             for (let i = 0; i < snakeBody.length; i++) {
                 if (snakeX === snakeBody[i][0] && snakeY === snakeBody[i][1]) {
                     gameOver = true;
-                    alert("Game Over");
+                    alert("Okat he 1000 krneki Game Over");
+                    window.location.href = 'index.html';
                 }
             }
         }
