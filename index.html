@@ -64,7 +64,6 @@
             border: none;
             border-radius: 5px;
             cursor: pointer;
-
         }
 
         .bc:hover {
@@ -77,19 +76,46 @@
         }
 
         @media (max-width: 600px) {
+            body {
+                padding: 10px;
+            }
+
             canvas {
-                width: 90%;
+                width: 100%;
                 height: auto;
             }
 
             .geeks {
-                font-size: 30px;
+                font-size: 20px;
             }
 
-            button {
+            .controls {
+                flex-direction: column;
+            }
+
+            .controls div {
+                display: flex;
+                justify-content: center;
+                gap: 5px;
+            }
+
+            .bh, .bc {
                 width: 50px;
                 height: 50px;
                 font-size: 18px;
+            }
+
+            .bh {
+                background-color: transparent;
+            }
+
+            .bc:hover {
+                background-color: #218838;
+                color: white;
+            }
+
+            .bc:active {
+                background-color: #1e7e34;
             }
         }
     </style>
@@ -106,25 +132,24 @@
     <div class="controls">
         <div>
             <button onclick="changeDirection({ code: 'Arrow' })" style="color:#0095bf;background-color: rgba(0, 0, 0, 0);" class="bh">.</button>
-            <button onclick="changeDirection({ code: 'ArrowUp' })" style="box-shadow: -4px 4px 13px 5px #333;" class="bc">↑</button>
+            <button onclick="changeDirection({ code: 'ArrowUp' })" style="box-shadow: -4px 4px 13px 5px #333;" class="bc">&#8593;</button>
             <button onclick="changeDirection({ code: 'Arrow' })" style="color:#0095bf;background-color: rgba(0, 0, 0, 0);" class="bh">.</button>
         </div>
         <div>
-            <button onclick="changeDirection({ code: 'ArrowLeft' })" style="box-shadow: -4px 4px 13px 5px #333;" class="bc">←</button>
+            <button onclick="changeDirection({ code: 'ArrowLeft' })" style="box-shadow: -4px 4px 13px 5px #333;" class="bc">&#8592;</button>
             <button onclick="changeDirection({ code: 'Arrow' })" style="color:#0095bf;background-color: rgba(0, 0, 0, 0);" class="bh">.</button>
             <button onclick="changeDirection({ code: 'Arrow' })" style="color:#0095bf;background-color: rgba(0, 0, 0, 0);" class="bh">.</button>
-            <button onclick="changeDirection({ code: 'ArrowRight' })" style="box-shadow: -4px 4px 13px 5px #333;" class="bc">→</button>
+            <button onclick="changeDirection({ code: 'ArrowRight' })" style="box-shadow: -4px 4px 13px 5px #333;" class="bc">&#8594;</button>
         </div>
         <div>
             <button onclick="changeDirection({ code: 'Arrow' })" style="color:#0095bf;background-color: rgba(0, 0, 0, 0);" class="bh">.</button>
-            <button onclick="changeDirection({ code: 'ArrowDown' })" style="box-shadow: -4px 4px 13px 5px #333;" class="bc">↓</button>
+            <button onclick="changeDirection({ code: 'ArrowDown' })" style="box-shadow: -4px 4px 13px 5px #333;" class="bc">&#8595;</button>
             <button onclick="changeDirection({ code: 'Arrow' })" style="color:#0095bf;background-color: rgba(0, 0, 0, 0);" class="bh">.</button>
         </div>
     </div>
-      <div class="controls">
-        <a href="ad.html" style="color: darkmagenta;"><p>develop by Webbuilder369</p></a>
-      </div>
-
+    <div class="controls">
+        <a href="ad.html" style="color: darkmagenta;"><p>Developed by Webbuilder369</p></a>
+    </div>
 
     <script>
         let blockSize = 10;
