@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snake Game</title>
+    <style>
+        body {
+            text-align: center;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 90vh;
+            background-color: #0095bf;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+
+        .geeks {
+            font-size: 40px;
+            font-weight: bold;
+            color: #b94040;
+        }
+
+        canvas {
+            border: 2px solid #000;
+            background-color: lightgreen;
+        }
+
+        .controls {
+            margin-top: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+        }
+
+        .bh {
+            width: 60px;
+            height: 60px;
+            font-size: 24px;
+            font-weight: bold;
+            background-color: #0095bf;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .bc {
+            width: 60px;
+            height: 60px;
+            font-size: 24px;
+            font-weight: bold;
+            background-color: #0095bf;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+
+        }
+
+        .bc:hover {
+            background-color: #218838;
+            color: #f0f0f0;
+        }
+
+        button:active {
+            background-color: #218838;
+        }
+
+        @media (max-width: 600px) {
+            canvas {
+                width: 90%;
+                height: auto;
+            }
+
+            .geeks {
+                font-size: 30px;
+            }
+
+            button {
+                width: 50px;
+                height: 50px;
+                font-size: 18px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Snake Game
+        <div class="geeks">Okat he 1000 krneki</div>
+    </h1>
+    <div>
+        <strong>Score:</strong> <span id="score">0</span>
+    </div>
+    <div>.</div>
+    <canvas id="board" style="box-shadow: -4px 4px 13px 5px #333;"></canvas>
+    <div class="controls">
+        <p style="color: #0095bf;">Subham</p>
+    </div>
+    <div class="controls">
+        <div>
+            <button onclick="changeDirection({ code: 'Arrow' })" style="color:#0095bf;background-color: rgba(0, 0, 0, 0);" class="bh">.</button>
+            <button onclick="changeDirection({ code: 'ArrowUp' })" style="box-shadow: -4px 4px 13px 5px #333;" class="bc">↑</button>
+            <button onclick="changeDirection({ code: 'Arrow' })" style="color:#0095bf;background-color: rgba(0, 0, 0, 0);" class="bh">.</button>
+        </div>
+        <div>
+            <button onclick="changeDirection({ code: 'ArrowLeft' })" style="box-shadow: -4px 4px 13px 5px #333;" class="bc">←</button>
+            <button onclick="changeDirection({ code: 'Arrow' })" style="color:#0095bf;background-color: rgba(0, 0, 0, 0);" class="bh">.</button>
+            <button onclick="changeDirection({ code: 'Arrow' })" style="color:#0095bf;background-color: rgba(0, 0, 0, 0);" class="bh">.</button>
+            <button onclick="changeDirection({ code: 'ArrowRight' })" style="box-shadow: -4px 4px 13px 5px #333;" class="bc">→</button>
+        </div>
+        <div>
+            <button onclick="changeDirection({ code: 'Arrow' })" style="color:#0095bf;background-color: rgba(0, 0, 0, 0);" class="bh">.</button>
+            <button onclick="changeDirection({ code: 'ArrowDown' })" style="box-shadow: -4px 4px 13px 5px #333;" class="bc">↓</button>
+            <button onclick="changeDirection({ code: 'Arrow' })" style="color:#0095bf;background-color: rgba(0, 0, 0, 0);" class="bh">.</button>
+        </div>
+    </div>
+
+    <div class="controls">
+      <div class="controls">
+        <a href="ad.html" style="color: darkmagenta;"><p>develop by Webbuilder369</p></a>
+      </div>
+    </div>
+
+
+    <script>
+        let blockSize = 10;
+        let total_row = 17;
+        let total_col = 17;
+        let board;
+        let context;
+
+        let snakeX = blockSize * 2;
+        let snakeY = blockSize * 2;
+
+        let speedX = 0;
+        let speedY = 0;
+
+        let snakeBody = [];
+        let foodX;
+        let foodY;
+
+        let score = 0; // Initialize score
+        let gameOver = false;
+
+        window.onload = function () {
+            board = document.getElementById("board");
+
+            const screenSize = Math.min(window.innerWidth, window.innerHeight) * 0.8;
+            board.width = board.height = Math.floor(screenSize / blockSize) * blockSize;
+
+            total_row = board.height / blockSize;
+            total_col = board.width / blockSize;
+
+            context = board.getContext("2d");
+
+            placeFood();
+            document.addEventListener("keyup", changeDirection);
+
+            setInterval(update, 1000 / 5);
+        };
+
+        function update() {
+            if (gameOver) {
+                return;
+            }
+
+            context.fillStyle = "green";
+            context.fillRect(0, 0, board.width, board.height);
+
+            context.fillStyle = "yellow";
+            context.fillRect(foodX, foodY, blockSize, blockSize);
+
+            if (snakeX === foodX && snakeY === foodY) {
+                snakeBody.push([foodX, foodY]);
+                score++; // Increment score
+                document.getElementById("score").innerText = score; // Update score display
+                placeFood();
+            }
+
+            for (let i = snakeBody.length - 1; i > 0; i--) {
+                snakeBody[i] = snakeBody[i - 1];
+            }
+            if (snakeBody.length) {
+                snakeBody[0] = [snakeX, snakeY];
+            }
+
+            snakeX += speedX * blockSize;
+            snakeY += speedY * blockSize;
+
+            context.fillStyle = "white";
+            context.fillRect(snakeX, snakeY, blockSize, blockSize);
+            for (let i = 0; i < snakeBody.length; i++) {
+                context.fillRect(snakeBody[i][0], snakeBody[i][1], blockSize, blockSize);
+            }
+
+            if (snakeX < 0 || snakeX >= board.width || snakeY < 0 || snakeY >= board.height) {
+                gameOver = true;
+                alert("Game Over");
+            }
+
+            for (let i = 0; i < snakeBody.length; i++) {
+                if (snakeX === snakeBody[i][0] && snakeY === snakeBody[i][1]) {
+                    gameOver = true;
+                    alert("Game Over");
+                }
+            }
+        }
+
+        function changeDirection(e) {
+            if (e.code === "ArrowUp" && speedY !== 1) {
+                speedX = 0;
+                speedY = -1;
+            } else if (e.code === "ArrowDown" && speedY !== -1) {
+                speedX = 0;
+                speedY = 1;
+            } else if (e.code === "ArrowLeft" && speedX !== 1) {
+                speedX = -1;
+                speedY = 0;
+            } else if (e.code === "ArrowRight" && speedX !== -1) {
+                speedX = 1;
+                speedY = 0;
+            }
+        }
+
+        function placeFood() {
+            foodX = Math.floor(Math.random() * total_col) * blockSize;
+            foodY = Math.floor(Math.random() * total_row) * blockSize;
+        }
+    </script>
+</body>
+
+</html>
